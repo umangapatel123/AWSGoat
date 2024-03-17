@@ -194,16 +194,8 @@ export default function User() {
 
   useEffect(
     () => {
-      if (filterName.length === 0) {
-        httpService
-          .post('/get-users', { authLevel })
-          .then((response) => {
-            setUserList(response.data.body.Items);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      } else {
+      if (filterName.length > 0)
+      {
         httpService
           .post('/search-author', { value: filterName, authLevel })
           .then((response) => {
@@ -212,6 +204,10 @@ export default function User() {
           .catch((error) => {
             console.error(error);
           });
+      }
+      else
+      {
+        setUserList([]);
       }
     },
     [filterName],
