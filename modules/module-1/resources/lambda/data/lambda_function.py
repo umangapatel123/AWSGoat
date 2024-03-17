@@ -499,9 +499,6 @@ def lambda_handler(event, context):
             name = data["value"]
             authLevel = data["authLevel"]
             try:
-                if len(name) == 0:
-                    responses = "Please enter a valid name"
-                    return generateResponse(200, json.dumps({"body": responses}))
                 if authLevel == "200":
                     exec_statement = (
                         'SELECT * FROM "blog-users" where name = \''
@@ -565,49 +562,47 @@ def lambda_handler(event, context):
             authLevel = data["authLevel"]
             print("got auth level")
             try:
-                # if authLevel == "200":
-                #     exec_statement = """SELECT * FROM "blog-users" where authLevel in ('200','100');"""
-                # elif authLevel == "100":
-                #     exec_statement = """SELECT * FROM "blog-users" where authLevel in ('200','100','0');"""
-                # else:
-                #     exec_statement = 'SELECT * FROM "blog-users";'
+                if authLevel == "200":
+                    exec_statement = """SELECT * FROM "blog-users" where authLevel in ('200','100');"""
+                elif authLevel == "100":
+                    exec_statement = """SELECT * FROM "blog-users" where authLevel in ('200','100','0');"""
+                else:
+                    exec_statement = 'SELECT * FROM "blog-users";'
 
-                # print(exec_statement)
-                # responses = client.execute_statement(Statement=exec_statement)
-                # print(responses)
-                # if responses["Items"] != {}:
-                #     for item in responses["Items"]:
-                #         if "email" in item:
-                #             item["email"] = item["email"]["S"]
-                #         if "address" in item:
-                #             item["address"] = item["address"]["S"]
-                #         if "country" in item:
-                #             item["country"] = item["country"]["S"]
-                #         if "name" in item:
-                #             item["name"] = item["name"]["S"]
-                #         if "phone" in item:
-                #             item["phone"] = item["phone"]["S"]
-                #         if "secretQuestion" in item:
-                #             item["secretQuestion"] = ""
-                #         if "secretAnswer" in item:
-                #             item["secretAnswer"] = ""
-                #         if "username" in item:
-                #             item["username"] = item["username"]["S"]
-                #         if "password" in item:
-                #             item["password"] = ""
-                #         if "id" in item:
-                #             item["id"] = item["id"]["S"]
-                #         if "userStatus" in item:
-                #             item["userStatus"] = item["userStatus"]["S"]
-                #         if "authLevel" in item:
-                #             item["authLevel"] = item["authLevel"]["S"]
-                #         if "creationDate" in item:
-                #             item["creationDate"] = item["creationDate"]["S"]
+                print(exec_statement)
+                responses = client.execute_statement(Statement=exec_statement)
+                print(responses)
+                if responses["Items"] != {}:
+                    for item in responses["Items"]:
+                        if "email" in item:
+                            item["email"] = item["email"]["S"]
+                        if "address" in item:
+                            item["address"] = item["address"]["S"]
+                        if "country" in item:
+                            item["country"] = item["country"]["S"]
+                        if "name" in item:
+                            item["name"] = item["name"]["S"]
+                        if "phone" in item:
+                            item["phone"] = item["phone"]["S"]
+                        if "secretQuestion" in item:
+                            item["secretQuestion"] = ""
+                        if "secretAnswer" in item:
+                            item["secretAnswer"] = ""
+                        if "username" in item:
+                            item["username"] = item["username"]["S"]
+                        if "password" in item:
+                            item["password"] = ""
+                        if "id" in item:
+                            item["id"] = item["id"]["S"]
+                        if "userStatus" in item:
+                            item["userStatus"] = item["userStatus"]["S"]
+                        if "authLevel" in item:
+                            item["authLevel"] = item["authLevel"]["S"]
+                        if "creationDate" in item:
+                            item["creationDate"] = item["creationDate"]["S"]
 
-                # print("Response ", responses)
-                # return generateResponse(200, json.dumps({"body": responses}))
-                # return empty response
-                return generateResponse(200, json.dumps({"body": []}))
+                print("Response ", responses)
+                return generateResponse(200, json.dumps({"body": responses}))
             except Exception as e:
                 print("Except block ", e)
                 return generateResponse(500, json.dumps(str(traceback.format_exc())))
